@@ -12,6 +12,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "extract-text-webpack-plugin": "^1.0.1",
+    "leancloud-storage": "^2.1.0",
     "react-router": "^2.8.1",
     "react-weui": "^1.0.3",
     "weui": "^1.1.0"
