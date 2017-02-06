@@ -1,0 +1,17 @@
+# OSX
+.DS_Store
+
+# IDE
+.idea/
+
+# npm
+node_modules
+
+# git
+*.diff
+
+# svn
+.svn/
+
+# log file
+*.log
