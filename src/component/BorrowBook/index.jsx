@@ -14,21 +14,23 @@ import {
 	Icon,
 	Input,
 	Label,
-	Radio
+	Radio,
+	Select,
+	Checkbox
 } from 'react-weui';
 
 import './index.scss';
 
 AV.init({
-  appId: '48J8TbEpg8GsjtKeY88jXaze-gzGzoHsz',
-  appKey: '55vgWsLWUenIJWdJPCGn1OhJ'
+	appId: '48J8TbEpg8GsjtKeY88jXaze-gzGzoHsz',
+	appKey: '55vgWsLWUenIJWdJPCGn1OhJ'
 });
 
 export default class BorrowBook extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			step: 0,
+			step: 1,
 			form: {
 				xiaoqu: '屏峰校区',
 				name: '',
@@ -39,7 +41,7 @@ export default class BorrowBook extends React.Component {
 		};
 	}
 	componentDidMount() {
-		
+
 	}
 	changeRadio(value) {
 		const {
@@ -69,7 +71,7 @@ export default class BorrowBook extends React.Component {
 	render() {
 		return (
 			<div className="scroll-body">
-				{	this.state.step === 0 &&
+				{this.state.step === 0 &&
 					<div>
 						<CellsTitle className="cell-title">第一步：信息填写</CellsTitle>
 						<Form radio>
@@ -129,6 +131,38 @@ export default class BorrowBook extends React.Component {
 				{this.state.step === 1 &&
 					<div>
 						<CellsTitle className="cell-title">{this.state.form.xiaoqu + ' >> ' + this.state.form.name}</CellsTitle>
+						<Form>
+							<FormCell select selectPos="before" className="select-form">
+								<CellHeader>
+									<Select className="select-list">
+										<option value="1">书名</option>
+										<option value="2">作者</option>
+										<option value="3">出版社</option>
+									</Select>
+								</CellHeader>
+								<CellBody>
+									<Input type="text" />
+								</CellBody>
+								<CellFooter>
+									<Button type="vcode" className="search-btn">搜索</Button>
+								</CellFooter>
+							</FormCell>
+						</Form>
+						<CellsTitle>Checkbox</CellsTitle>
+						<Form checkbox>
+							<FormCell checkbox>
+								<CellHeader>
+									<Checkbox name="checkbox1" value="1" />
+								</CellHeader>
+								<CellBody>Option 1</CellBody>
+							</FormCell>
+							<FormCell checkbox>
+								<CellHeader>
+									<Checkbox name="checkbox2" value="2" defaultChecked />
+								</CellHeader>
+								<CellBody>Option 2</CellBody>
+							</FormCell>
+						</Form>
 					</div>
 				}
 			</div>
