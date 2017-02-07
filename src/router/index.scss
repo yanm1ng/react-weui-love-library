@@ -1,6 +1,11 @@
-.tabbar {
-    height: 100%;
-    position: fixed;
+.main-body {
+    position: relative;
     width: 100%;
-    bottom: 0;
+    min-height: 100%;
+}
+.tabbar {
+   position: fixed;
+   bottom: 0px;
+   left: 0px;
+   width: 100%;
 }

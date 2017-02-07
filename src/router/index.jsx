@@ -21,12 +21,7 @@ class App extends React.Component {
 	}
 	render() {
 		return (
-			<div>
-				<Tab type="tabbar" className="tabbar" onChange={this.handleHashIndex}>
-					<TabBarItem icon={<img src={IconA}/>} label="借书"></TabBarItem>
-					<TabBarItem icon={<img src={IconB}/>} label="捐书"></TabBarItem>
-					<TabBarItem icon={<img src={IconC}/>} label="书目"></TabBarItem>
-				</Tab>
+			<div className="main-body">
 				<Router>
 					<Route path="/">
 						<IndexRoute component={BorrowBook}/>
@@ -35,6 +30,11 @@ class App extends React.Component {
     				<Route path="/list" component={ListBook}/>
 					</Route>
 				</Router>
+				<Tab type="tabbar" className="tabbar" onChange={this.handleHashIndex}>
+					<TabBarItem icon={<img src={IconA}/>} label="借书"></TabBarItem>
+					<TabBarItem icon={<img src={IconB}/>} label="捐书"></TabBarItem>
+					<TabBarItem icon={<img src={IconC}/>} label="书目"></TabBarItem>
+				</Tab>
 			</div>
 		)
 	}

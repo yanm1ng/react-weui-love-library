@@ -8,14 +8,13 @@ import {
 	CellHeader,
 	CellBody,
 	CellFooter,
+	CellsTips,
 	Form,
 	FormCell,
 	Icon,
 	Input,
 	Label,
-	Radio,
-	Agreement,
-	Toptips
+	Radio
 } from 'react-weui';
 
 import './index.scss';
@@ -40,20 +39,7 @@ export default class BorrowBook extends React.Component {
 		};
 	}
 	componentDidMount() {
-		var Book = AV.Object.extend('Book');
-		// 新建对象
-		var book = new Book();
-		// 设置名称
-		book.set('name', '数据结构与算法分析');
-		book.set('author', 'ym');
-		book.set('publish', '工业出版社');
-		book.set('num', 1);
-
-		book.save().then(function (book) {
-			console.log('objectId is ' + book.id);
-		}, function (error) {
-			console.error(error);
-		});
+		
 	}
 	changeRadio(value) {
 		const {
@@ -82,7 +68,7 @@ export default class BorrowBook extends React.Component {
 	}
 	render() {
 		return (
-			<div>
+			<div className="scroll-body">
 				{	this.state.step === 0 &&
 					<div>
 						<CellsTitle className="cell-title">第一步：信息填写</CellsTitle>
@@ -136,6 +122,7 @@ export default class BorrowBook extends React.Component {
 								</CellBody>
 							</FormCell>
 						</Form>
+						<CellsTips>请仔细填写以上信息</CellsTips>
 						<Button className="large-btn" onClick={() => this.handleStep(1)}>下一步</Button>
 					</div>
 				}
