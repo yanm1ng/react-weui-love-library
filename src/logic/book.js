@@ -7,5 +7,6 @@ AV.init({
 });
 
 export function getBookList() {
-  console.log('1');
+	var query = new AV.Query('Book');
+	return query.find();
 }

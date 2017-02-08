@@ -34,11 +34,30 @@ export default class BorrowBook extends React.Component {
 				xueyuan: '',
 				xuehao: '',
 				phone: ''
-			}
+			},
+			all: [],
+			searched: [],
+			checked: []
 		};
 	}
 	componentDidMount() {
-		getBookList();
+		var that = this;
+		getBookList().then(function (books) {
+			let all = [];
+			for (let i = 0; i < books.length; i++) {
+				let book = books[i].attributes;
+				all.push({
+					id: i,
+					author: book.author,
+					name: book.name,
+					num: book.num,
+					publish: book.publish,
+				})
+			}
+			that.setState({
+				all
+			})
+		});
 	}
 	changeRadio(value) {
 		const {
@@ -64,6 +83,22 @@ export default class BorrowBook extends React.Component {
 				step
 			});
 		}
+	}
+	renderList(book) {
+		return (
+			<FormCell checkbox className="rich-checkbox">
+				<CellHeader>
+					<Checkbox defaultChecked/>
+				</CellHeader>
+				<CellBody>
+					<div className="book-name">{book.name}</div>
+					<div className="book-info">{book.author}#{book.publish}</div>
+				</CellBody>
+				<CellFooter>
+					<div className="book-num">可借：{book.num}</div>
+				</CellFooter>
+			</FormCell>
+		)
 	}
 	render() {
 		return (
@@ -147,30 +182,9 @@ export default class BorrowBook extends React.Component {
 						</Form>
 						<CellsTitle>剩余可选4本</CellsTitle>
 						<Form checkbox>
-							<FormCell checkbox className="rich-checkbox">
-								<CellHeader>
-									<Checkbox defaultChecked/>
-								</CellHeader>
-								<CellBody>
-									<div className="book-name">数据结构与设计</div>
-									<div className="book-info">小王#工业出版社</div>
-								</CellBody>
-								<CellFooter>
-									<div className="book-num">可借：1</div>
-								</CellFooter>
-							</FormCell>
-							<FormCell checkbox className="rich-checkbox">
-								<CellHeader>
-									<Checkbox defaultChecked/>
-								</CellHeader>
-								<CellBody>
-									<div className="book-name">高等数学</div>
-									<div className="book-info">小李#高等教育出版社</div>
-								</CellBody>
-								<CellFooter>
-									<div className="book-num">可借：1</div>
-								</CellFooter>
-							</FormCell>
+							{
+								this.state.all.map(this.renderList)
+							}
 						</Form>
 					</div>
 				}
