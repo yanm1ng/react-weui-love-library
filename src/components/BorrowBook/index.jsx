@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AV from 'leancloud-storage';
 import {
 	Button,
 	CellsTitle,
@@ -20,11 +19,9 @@ import {
 } from 'react-weui';
 
 import './index.scss';
-
-AV.init({
-	appId: '48J8TbEpg8GsjtKeY88jXaze-gzGzoHsz',
-	appKey: '55vgWsLWUenIJWdJPCGn1OhJ'
-});
+import {
+	getBookList
+} from '../../logic/book';
 
 export default class BorrowBook extends React.Component {
 	constructor(props) {
@@ -41,7 +38,7 @@ export default class BorrowBook extends React.Component {
 		};
 	}
 	componentDidMount() {
-
+		getBookList();
 	}
 	changeRadio(value) {
 		const {

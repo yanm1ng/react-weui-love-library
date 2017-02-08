@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 import { Button, Tab, TabBarItem } from 'react-weui';
-import BorrowBook from '../component/BorrowBook/index';
-import DonateBook from '../component/DonateBook/index';
-import ListBook from '../component/ListBook/index';
+import BorrowBook from '../components/BorrowBook/index';
+import DonateBook from '../components/DonateBook/index';
+import ListBook from '../components/ListBook/index';
 
 import IconA from '../images/icon-a.png';
 import IconB from '../images/icon-b.png';
