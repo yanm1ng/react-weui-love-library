@@ -88,7 +88,7 @@ export default class BorrowBook extends React.Component {
 		return (
 			<FormCell checkbox className="rich-checkbox">
 				<CellHeader>
-					<Checkbox defaultChecked/>
+					<Checkbox checked={false}/>
 				</CellHeader>
 				<CellBody>
 					<div className="book-name">{book.name}</div>
