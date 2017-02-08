@@ -76,13 +76,13 @@ export default class BorrowBook extends React.Component {
 							<FormCell radio onClick={() => this.changeRadio('屏峰校区')}>
 								<CellBody>屏峰校区</CellBody>
 								<CellFooter>
-									<Radio name="radio" value="1" defaultChecked />
+									<Radio defaultChecked />
 								</CellFooter>
 							</FormCell>
 							<FormCell radio onClick={() => this.changeRadio('朝晖校区')}>
 								<CellBody>朝晖校区</CellBody>
 								<CellFooter>
-									<Radio name="radio" value="2" />
+									<Radio />
 								</CellFooter>
 							</FormCell>
 						</Form>
@@ -145,19 +145,31 @@ export default class BorrowBook extends React.Component {
 								</CellFooter>
 							</FormCell>
 						</Form>
-						<CellsTitle>Checkbox</CellsTitle>
+						<CellsTitle>剩余可选4本</CellsTitle>
 						<Form checkbox>
-							<FormCell checkbox>
+							<FormCell checkbox className="rich-checkbox">
 								<CellHeader>
-									<Checkbox name="checkbox1" value="1" />
+									<Checkbox defaultChecked/>
 								</CellHeader>
-								<CellBody>Option 1</CellBody>
+								<CellBody>
+									<div className="book-name">数据结构与设计</div>
+									<div className="book-info">小王#工业出版社</div>
+								</CellBody>
+								<CellFooter>
+									<div className="book-num">可借：1</div>
+								</CellFooter>
 							</FormCell>
-							<FormCell checkbox>
+							<FormCell checkbox className="rich-checkbox">
 								<CellHeader>
-									<Checkbox name="checkbox2" value="2" defaultChecked />
+									<Checkbox defaultChecked/>
 								</CellHeader>
-								<CellBody>Option 2</CellBody>
+								<CellBody>
+									<div className="book-name">高等数学</div>
+									<div className="book-info">小李#高等教育出版社</div>
+								</CellBody>
+								<CellFooter>
+									<div className="book-num">可借：1</div>
+								</CellFooter>
 							</FormCell>
 						</Form>
 					</div>
