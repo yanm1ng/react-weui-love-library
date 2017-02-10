@@ -84,23 +84,26 @@ export default class BorrowBook extends React.Component {
 			});
 		}
 	}
-	renderList(book) {
-		return (
-			<FormCell checkbox className="rich-checkbox">
-				<CellHeader>
-					<Checkbox checked={false}/>
-				</CellHeader>
-				<CellBody>
-					<div className="book-name">{book.name}</div>
-					<div className="book-info">{book.author}#{book.publish}</div>
-				</CellBody>
-				<CellFooter>
-					<div className="book-num">可借：{book.num}</div>
-				</CellFooter>
-			</FormCell>
-		)
+	changeCheckBox(id) {
+		const {
+			checked
+		} = this.state;
+
+		const index = checked.indexOf(id);
+		if (index == -1) {
+			checked.push(id);
+		} else {
+			checked.splice(index, 1);
+		}
+		this.setState({
+			checked
+		})
 	}
 	render() {
+		const {
+			checked,
+			form
+		} = this.state;
 		return (
 			<div className="scroll-body">
 				{this.state.step === 0 &&
@@ -162,7 +165,7 @@ export default class BorrowBook extends React.Component {
 				}
 				{this.state.step === 1 &&
 					<div>
-						<CellsTitle className="cell-title">{this.state.form.xiaoqu + ' >> ' + this.state.form.name}</CellsTitle>
+						<CellsTitle className="cell-title">{form.xiaoqu + ' >> ' + form.name}</CellsTitle>
 						<Form>
 							<FormCell select selectPos="before" className="select-form">
 								<CellHeader>
@@ -183,7 +186,20 @@ export default class BorrowBook extends React.Component {
 						<CellsTitle>剩余可选4本</CellsTitle>
 						<Form checkbox>
 							{
-								this.state.all.map(this.renderList)
+								this.state.all.map((book, i) => 
+									<FormCell checkbox className="rich-checkbox">
+										<CellHeader>
+											<Checkbox checked={checked.indexOf(book.id) != -1} onClick={() => this.changeCheckBox(book.id)}/>
+										</CellHeader>
+										<CellBody>
+											<div className="book-name">{book.name}</div>
+											<div className="book-info">{book.author}#{book.publish}</div>
+										</CellBody>
+										<CellFooter>
+											<div className="book-num">可借：{book.num}</div>
+										</CellFooter>
+									</FormCell>
+								)
 							}
 						</Form>
 					</div>
