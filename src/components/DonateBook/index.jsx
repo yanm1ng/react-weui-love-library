@@ -10,7 +10,8 @@ import {
 	Input,
 	CellsTips,
 	Button,
-	TextArea
+	TextArea,
+	Msg
 } from 'react-weui';
 
 import './index.scss';
@@ -19,7 +20,7 @@ export default class DonateBook extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			success: false,
+			success: true,
 			form: {
 				name: '',
 				xueyuan: '',
@@ -93,7 +94,22 @@ export default class DonateBook extends React.Component {
 					</div>
 				}
 				{ this.state.success &&
-					<div></div>
+					<div>
+						<Msg
+							type="success"
+							title="Action Success"
+							description="We have received your feedback"
+							buttons={[{
+									type: 'primary',
+									label: 'Ok',
+									onClick: false
+							}, {
+									type: 'default',
+									label: 'Cancel',
+									onClick: false
+							}]}
+						/>
+					</div>
 				}
       </div>
 		)
