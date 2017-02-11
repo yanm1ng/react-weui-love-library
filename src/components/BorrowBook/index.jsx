@@ -183,7 +183,7 @@ export default class BorrowBook extends React.Component {
 								</CellFooter>
 							</FormCell>
 						</Form>
-						<CellsTitle>剩余可选4本</CellsTitle>
+						<CellsTitle>剩余可选{5 - checked.length}本</CellsTitle>
 						<Form checkbox>
 							{
 								this.state.all.map((book, i) => 
