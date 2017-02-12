@@ -29,6 +29,8 @@ export default class ListBook extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			type: '0',
+			value: '',
 			all: [],
 			searched: [],
 		};
@@ -52,7 +54,46 @@ export default class ListBook extends React.Component {
 			})
 		});
 	}
+	handleSelect(e) {
+		const type = e.target.value;
+		this.setState({
+			type
+		})
+	}
+	handleChange(e) {
+		const value = e.target.value;
+		const searched = value === '' ? [] : this.state.searched;
+		this.setState({
+			value,
+			searched
+		})
+	}
+	handleSearch() {
+		const {
+			type,
+			value,
+			all
+		} = this.state;
+
+		const options = ['name', 'author', 'publish'];
+		const property = options[parseInt(type)];
+		let searched = [];
+
+		for (let i = 0; i < all.length; i++) {
+			if (all[i][property].indexOf(value) != -1) {
+				searched.push(all[i])
+			}
+		}
+		this.setState({
+			searched
+		})
+	}
 	render() {
+		const {
+			searched,
+			all
+		} = this.state;
+		const data = searched.length > 0 ? searched : all;
 		return (
 			<div className="scroll-body">
 				<div>
@@ -60,24 +101,24 @@ export default class ListBook extends React.Component {
 					<Form>
 						<FormCell select selectPos="before" className="select-form">
 							<CellHeader>
-								<Select className="select-list">
-									<option value="1">书名</option>
-									<option value="2">作者</option>
-									<option value="3">出版社</option>
+								<Select className="select-list" onChange={this.handleSelect.bind(this)}>
+									<option value="0">书名</option>
+									<option value="1">作者</option>
+									<option value="2">出版社</option>
 								</Select>
 							</CellHeader>
 							<CellBody>
-								<Input type="text" />
+								<Input type="text" onChange={this.handleChange.bind(this)}/>
 							</CellBody>
 							<CellFooter>
-								<Button type="vcode" className="search-btn">搜索</Button>
+								<Button type="vcode" className="search-btn" onClick={this.handleSearch.bind(this)}>搜索</Button>
 							</CellFooter>
 						</FormCell>
 					</Form>
 					<div>
 						<Cells className="full-cell">
 							{
-								this.state.all.map((book, i) => 
+								data.map((book, i) => 
 									<Cell className="rich-cell">
 										<CellBody>
 											<div className="book-name">{book.name}</div>

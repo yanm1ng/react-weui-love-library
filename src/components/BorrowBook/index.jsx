@@ -171,7 +171,7 @@ export default class BorrowBook extends React.Component {
 						<Form>
 							<FormCell select selectPos="before" className="select-form">
 								<CellHeader>
-									<Select className="select-list">
+									<Select className="select-list" onChange={this.changeSelect.bind(this)}>
 										<option value="1">书名</option>
 										<option value="2">作者</option>
 										<option value="3">出版社</option>
