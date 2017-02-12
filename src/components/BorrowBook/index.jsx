@@ -19,6 +19,7 @@ import {
 } from 'react-weui';
 
 import './index.scss';
+
 import {
 	getBookList
 } from '../../logic/book';
@@ -47,7 +48,8 @@ export default class BorrowBook extends React.Component {
 			for (let i = 0; i < books.length; i++) {
 				let book = books[i].attributes;
 				all.push({
-					id: i,
+					key: i,
+					id: books[i].id,
 					author: book.author,
 					name: book.name,
 					num: book.num,
@@ -84,14 +86,14 @@ export default class BorrowBook extends React.Component {
 			});
 		}
 	}
-	changeCheckBox(id) {
+	changeCheckBox(key) {
 		const {
 			checked
 		} = this.state;
 
-		const index = checked.indexOf(id);
+		const index = checked.indexOf(key);
 		if (index == -1) {
-			checked.push(id);
+			checked.push(key);
 		} else {
 			checked.splice(index, 1);
 		}
@@ -189,7 +191,7 @@ export default class BorrowBook extends React.Component {
 								this.state.all.map((book, i) => 
 									<FormCell checkbox className="rich-checkbox">
 										<CellHeader>
-											<Checkbox checked={checked.indexOf(book.id) != -1} onClick={() => this.changeCheckBox(book.id)}/>
+											<Checkbox checked={checked.indexOf(book.key) != -1} onClick={() => this.changeCheckBox(book.key)}/>
 										</CellHeader>
 										<CellBody>
 											<div className="book-name">{book.name}</div>
