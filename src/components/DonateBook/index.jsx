@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { 
+	Cell,
 	CellsTitle,
 	FormCell,
 	Form,
@@ -20,7 +21,7 @@ export default class DonateBook extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			success: true,
+			success: false,
 			form: {
 				name: '',
 				xueyuan: '',
@@ -81,6 +82,9 @@ export default class DonateBook extends React.Component {
 									<Input type="number" placeholder="捐书数量" id="num" />
 								</CellBody>
 							</FormCell>
+							<Cell link>
+                <CellBody>提示：捐书数量超过5本会有专人上门收书</CellBody>
+              </Cell>
 							{	this.state.form.num > 5 &&
 								<FormCell>
 									<CellBody>
