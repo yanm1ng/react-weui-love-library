@@ -42,11 +42,12 @@ export default class ListBook extends React.Component {
 			for (let i = 0; i < books.length; i++) {
 				let book = books[i].attributes;
 				all.push({
+					key: i,
 					id: books[i].id,
-					author: book.author,
-					name: book.name,
-					num: book.num,
-					publish: book.publish,
+					author: book.author || '',
+					name: book.name || '',
+					num: book.num || 0,
+					publish: book.publish || '',
 				})
 			}
 			that.setState({
