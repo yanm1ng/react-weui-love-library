@@ -7,6 +7,18 @@ AV.init({
 });
 
 export function getBookList() {
-  var query = new AV.Query('Book');
+
+  let query = new AV.Query('Book');
   return query.find();
+}
+
+export function borrowBook(id) {
+  let book = AV.Object.createWithoutData('Book', id);
+  book.fetch().then(function(){
+    let num = book.get('num');
+    book.set('num', num - 1);
+    book.save();
+  }, function (error) {
+    // 异常处理
+  });
 }

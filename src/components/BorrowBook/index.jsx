@@ -16,24 +16,28 @@ import {
   Radio,
   Select,
   Checkbox,
-  Toptips
+  Toptips,
+  Msg,
+  Dialog
 } from 'react-weui';
 
 import './index.scss';
 
 import {
-  getBookList
+  getBookList,
+  borrowBook
 } from '../../logic/book';
 
 export default class BorrowBook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      dialog: false,
       show: false,
       text: '',
       timer: null,
 
-      step: 1,
+      step: 0,
 
       step1: {
         xiaoqu: '屏峰校区',
@@ -84,35 +88,94 @@ export default class BorrowBook extends React.Component {
     } = this.state;
 
     step1.xiaoqu = value;
+
+    this.setState({
+      step1
+    });
+  }
+  handleInput(e, value) {
+    const {
+      step1
+    } = this.state;
+
+    step1[value] = e.target.value;
+
     this.setState({
       step1
     });
   }
   handleStep(step) {
-    const {
-      step1
-    } = this.state;
-
-    if (step === 1) {
-      const arr = ['name', 'xueyuan', 'xuehao', 'phone'];
-      arr.forEach(index => {
-        step1[index] = document.getElementById(index).value.trim();
-      });
+    if (step == 0) {
       this.setState({
-        step1,
         step
       });
+    } else if (step == 1) {
+      const {
+        step1
+      } = this.state;
+
+      let bool = false;
+      if (step1.name.trim() === '') {
+        bool = true;
+      } else if (step1.xueyuan.trim() === '') {
+        bool = true;
+      } else if (step1.xuehao.length < 12) {
+        bool = true;
+      } else {
+
+      }
+      if (bool) {
+        this.setState({
+          show: true,
+          text: '请检查表单信息是否填写正确'
+        });
+
+        this.state.timer = setTimeout(() => {
+          this.setState({
+            show: false
+          });
+        }, 2000);
+      } else {
+        this.setState({
+          step
+        });
+      }
+    } else if (step == 2) {
+      const {
+        checked
+      } = this.state.step2;
+      for (let i = 0; i < checked.length; i++) {
+        borrowBook(checked[i]);
+      }
+      this.setState({
+        dialog: false,
+        step
+      })
     }
   }
-  changeCheckBox(key) {
+  changeCheckBox(key, id) {
     const {
       step2
     } = this.state;
     const {
-      checked
+      checked,
+      all
     } = step2;
 
-    const index = checked.indexOf(key);
+    const index = checked.indexOf(id);
+    if (all[parseInt(key)].num == 0) {
+      this.setState({
+        show: true,
+        text: '该书库存少于1本，暂不可借'
+      });
+
+      this.state.timer = setTimeout(() => {
+        this.setState({
+          show: false
+        });
+      }, 2000);
+      return;
+    }
     if (checked.length >= 5 && index == -1) {
       this.setState({
         show: true,
@@ -127,7 +190,7 @@ export default class BorrowBook extends React.Component {
       return;
     }
     if (index == -1) {
-      checked.push(key);
+      checked.push(id);
     } else {
       checked.splice(index, 1);
     }
@@ -187,6 +250,11 @@ export default class BorrowBook extends React.Component {
       step2
     })
   }
+  handleDialog() {
+    this.setState({
+      dialog: !this.state.dialog
+    })
+  }
   render() {
     const {
       step1,
@@ -209,13 +277,13 @@ export default class BorrowBook extends React.Component {
               <FormCell radio onClick={() => this.changeRadio('屏峰校区')}>
                 <CellBody>屏峰校区</CellBody>
                 <CellFooter>
-                  <Radio defaultChecked />
+                  <Radio checked={step1.xiaoqu == '屏峰校区'} />
                 </CellFooter>
               </FormCell>
               <FormCell radio onClick={() => this.changeRadio('朝晖校区')}>
                 <CellBody>朝晖校区</CellBody>
                 <CellFooter>
-                  <Radio />
+                  <Radio checked={step1.xiaoqu == '朝晖校区'} />
                 </CellFooter>
               </FormCell>
             </Form>
@@ -226,7 +294,7 @@ export default class BorrowBook extends React.Component {
                   <Label>姓名</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="text" placeholder="你的姓名" id="name" />
+                  <Input type="text" placeholder="你的姓名" value={step1.name} onChange={(e) => this.handleInput(e, 'name')} />
                 </CellBody>
               </FormCell>
               <FormCell>
@@ -234,7 +302,7 @@ export default class BorrowBook extends React.Component {
                   <Label>学院</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="text" placeholder="你的学院" id="xueyuan" />
+                  <Input type="text" placeholder="你的学院" value={step1.xueyuan} onChange={(e) => this.handleInput(e, 'xueyuan')} />
                 </CellBody>
               </FormCell>
               <FormCell>
@@ -242,7 +310,7 @@ export default class BorrowBook extends React.Component {
                   <Label>学号</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="number" placeholder="你的学号" id="xuehao" />
+                  <Input type="number" placeholder="你的学号" value={step1.xuehao} onChange={(e) => this.handleInput(e, 'xuehao')} />
                 </CellBody>
               </FormCell>
               <FormCell>
@@ -250,7 +318,7 @@ export default class BorrowBook extends React.Component {
                   <Label>联系方式</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="text" placeholder="长短号" id="phone" />
+                  <Input type="text" placeholder="长短号" value={step1.phone} onChange={(e) => this.handleInput(e, 'phone')} />
                 </CellBody>
               </FormCell>
             </Form>
@@ -260,7 +328,18 @@ export default class BorrowBook extends React.Component {
         }
         {this.state.step === 1 &&
           <div>
-            <CellsTitle className="cell-title">{step1.xiaoqu + ' >> ' + step1.name}</CellsTitle>
+            <Dialog title="注意事项" buttons={[{
+              type: 'default',
+              label: '取消',
+              onClick: this.handleDialog.bind(this)
+            },{
+              type: 'primary',
+              label: '同意',
+              onClick: () => this.handleStep(2)
+            }]} show={this.state.dialog}>
+              请爱护图书，还书将于期末由专人短信通知
+            </Dialog>
+            <CellsTitle className="cell-title" onClick={() => this.handleStep(0)}>{'<< 返回上一步'}</CellsTitle>
             <Form>
               <FormCell select selectPos="before" className="select-form">
                 <CellHeader>
@@ -280,14 +359,14 @@ export default class BorrowBook extends React.Component {
             </Form>
             <CellsTitle>
               <div className="remain-num">剩余可选{5 - checked.length}本</div>
-              <Button size="small" className="right-mini-btn" type={checked.length > 0 ? 'primary' : 'default'}>选好了</Button>
+              <Button size="small" className="right-mini-btn" type={checked.length > 0 ? 'primary' : 'default'} onClick={() => this.handleDialog()}>选好了</Button>
             </CellsTitle>
             <Form checkbox className="margin-form">
               {
                 data.map((book, i) =>
                   <FormCell checkbox className="rich-checkbox">
                     <CellHeader>
-                      <Checkbox checked={checked.indexOf(book.key) != -1} onClick={() => this.changeCheckBox(book.key)} />
+                      <Checkbox checked={checked.indexOf(book.id) != -1} onClick={() => this.changeCheckBox(book.key, book.id)} />
                     </CellHeader>
                     <CellBody>
                       <div className="book-name">{book.name}</div>
@@ -300,6 +379,20 @@ export default class BorrowBook extends React.Component {
                 )
               }
             </Form>
+          </div>
+        }
+        {this.state.step === 2 &&
+          <div>
+            <Msg
+              type="success"
+              title="借阅成功"
+              description="取书时间地点"
+              buttons={[{
+                type: 'primary',
+                label: '确定',
+                onClick: () => this.handleStep(0)
+              },]}
+            />
           </div>
         }
       </div>
