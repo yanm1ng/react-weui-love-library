@@ -12,34 +12,109 @@ import {
   CellsTips,
   Button,
   TextArea,
-  Msg
+  Msg,
+  Toptips
 } from 'react-weui';
 
 import './index.scss';
+
+import {
+  addDonate,
+} from '../../logic/donate';
 
 export default class DonateBook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       success: false,
+      show: false,
+      text: '',
+      timer: null,
+
       form: {
         name: '',
         xueyuan: '',
         qinshi: '',
         phone: '',
-        num: 8,
-        book: ''
+        num: '0',
+        books: ''
       },
     };
   }
-  handleSubmit() {
+  componentWillUnmount() {
+    this.state.timer && clearTimeout(this.state.timer);
+  }
+  handleInput(e, value) {
+    const {
+      form
+    } = this.state;
 
+    form[value] = e.target.value;
+
+    this.setState({
+      form
+    });
+  }
+  backForward() {
+    this.setState({
+      success: false,
+      form: {
+        name: '',
+        xueyuan: '',
+        qinshi: '',
+        phone: '',
+        num: '0',
+        books: ''
+      },
+    })
+  }
+  handleSubmit() {
+    const {
+      form
+    } = this.state;
+    const that = this;
+    let bool = false;
+    if (form.name.trim() === '') {
+      bool = true;
+    } else if (form.xueyuan.trim() === '') {
+      bool = true;
+    } else if (form.qinshi.trim() === '') {
+      bool = true;
+    } else if (form.phone.trim() === '') {
+      bool = true;
+    } else if (parseInt(form.num) <= 0) {
+      bool = true;
+    } else {
+
+    }
+    if (bool) {
+      this.setState({
+        show: true,
+        text: '请检查表单信息是否填写正确'
+      });
+
+      this.state.timer = setTimeout(() => {
+        this.setState({
+          show: false
+        });
+      }, 2000);
+    } else {
+      addDonate(form).save().then(function(donate){
+        that.setState({
+          success: true
+        })
+      })
+    }
   }
   render() {
+    const {
+      form
+    } = this.state;
     return (
       <div className="scroll-body">
         {!this.state.success &&
           <div>
+            <Toptips type="warn" show={this.state.show}>{this.state.text}</Toptips>
             <CellsTitle className="cell-title">信息填写</CellsTitle>
             <Form>
               <FormCell>
@@ -47,7 +122,7 @@ export default class DonateBook extends React.Component {
                   <Label>姓名</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="text" placeholder="你的姓名" id="name" />
+                  <Input type="text" placeholder="你的姓名" value={form.name} onChange={(e) => this.handleInput(e, 'name')} />
                 </CellBody>
               </FormCell>
               <FormCell>
@@ -55,7 +130,7 @@ export default class DonateBook extends React.Component {
                   <Label>学院</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="text" placeholder="你的学院" id="xueyuan" />
+                  <Input type="text" placeholder="你的学院" value={form.xueyuan} onChange={(e) => this.handleInput(e, 'xueyuan')} />
                 </CellBody>
               </FormCell>
               <FormCell>
@@ -63,7 +138,7 @@ export default class DonateBook extends React.Component {
                   <Label>寝室</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="text" placeholder="你的寝室" id="qinshi" />
+                  <Input type="text" placeholder="你的寝室" value={form.qinshi} onChange={(e) => this.handleInput(e, 'qinshi')} />
                 </CellBody>
               </FormCell>
               <FormCell>
@@ -71,7 +146,7 @@ export default class DonateBook extends React.Component {
                   <Label>联系方式</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="number" placeholder="长短号" id="phone" />
+                  <Input type="text" placeholder="长短号" value={form.phone} onChange={(e) => this.handleInput(e, 'phone')} />
                 </CellBody>
               </FormCell>
               <FormCell>
@@ -79,16 +154,16 @@ export default class DonateBook extends React.Component {
                   <Label>捐书数量</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="number" placeholder="捐书数量" id="num" />
+                  <Input type="number" placeholder="捐书数量" value={form.num} onChange={(e) => this.handleInput(e, 'num')} />
                 </CellBody>
               </FormCell>
               <Cell link>
                 <CellBody>提示：捐书数量超过5本会有专人上门收书</CellBody>
               </Cell>
-              {this.state.form.num > 5 &&
+              {form.num >= 5 &&
                 <FormCell>
                   <CellBody>
-                    <TextArea placeholder="请备注书名" rows="3" maxlength="200"></TextArea>
+                    <TextArea placeholder="请备注书名" rows="3" maxlength="200" value={form.books} onChange={(e) => this.handleInput(e, 'books')}></TextArea>
                   </CellBody>
                 </FormCell>
               }
@@ -101,16 +176,12 @@ export default class DonateBook extends React.Component {
           <div>
             <Msg
               type="success"
-              title="Action Success"
-              description="We have received your feedback"
+              title="提交成功"
+              description={parseInt(form.num) >= 5 ? '我们会安排工作人员三天内上门收书，感谢你的支持' : '感谢你的支持'}
               buttons={[{
                 type: 'primary',
-                label: 'Ok',
-                onClick: false
-              }, {
-                type: 'default',
-                label: 'Cancel',
-                onClick: false
+                label: '返回',
+                onClick: () => this.backForward()
               }]}
             />
           </div>
