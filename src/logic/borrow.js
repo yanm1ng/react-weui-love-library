@@ -11,7 +11,7 @@ export function addBorrow(data) {
   const Borrow = AV.Object.extend('Borrow');
   const borrow = new Borrow();
   for (let key in data) {
-    donate.set(key, data[key]);
+    borrow.set(key, data[key]);
   }
   
   return borrow;

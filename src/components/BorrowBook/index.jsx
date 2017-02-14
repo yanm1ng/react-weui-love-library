@@ -28,6 +28,10 @@ import {
   borrowBook
 } from '../../logic/book';
 
+import {
+  addBorrow
+} from '../../logic/borrow';
+
 export default class BorrowBook extends React.Component {
   constructor(props) {
     super(props);
@@ -142,14 +146,32 @@ export default class BorrowBook extends React.Component {
       }
     } else if (step == 2) {
       const {
-        checked
+        checked,
+        all
       } = this.state.step2;
+      const {
+        step1
+      } = this.state;
+      const that = this;
+
       for (let i = 0; i < checked.length; i++) {
         borrowBook(checked[i]);
       }
-      this.setState({
-        dialog: false,
-        step
+      let books = '';
+      for (let j = 0; j < checked.length; j++) {
+        let id = checked[j];
+        for(let k = 0; k < all.length; k++) {
+          if (all[k].id == id) {
+            books += all[k].name + '、';
+          }
+        }
+      }
+      step1.books = books;
+      addBorrow(step1).save().then(function(borrow){
+        that.setState({
+          dialog: false,
+          step
+        })
       })
     }
   }
@@ -251,9 +273,26 @@ export default class BorrowBook extends React.Component {
     })
   }
   handleDialog() {
-    this.setState({
-      dialog: !this.state.dialog
-    })
+    const {
+      step2,
+      dialog
+    } = this.state;
+    if (!dialog && step2.checked.length == 0) {
+      this.setState({
+          show: true,
+          text: '请先选择要借阅的书籍',
+        });
+
+        this.state.timer = setTimeout(() => {
+          this.setState({
+            show: false
+          });
+        }, 2000);
+    } else {
+      this.setState({
+        dialog: !dialog
+      })
+    }
   }
   render() {
     const {
