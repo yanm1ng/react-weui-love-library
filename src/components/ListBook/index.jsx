@@ -53,6 +53,8 @@ export default class ListBook extends React.Component {
           label: '考级'
         },{
           label: '复习资料'
+        },{
+          label: '其他学院'
         }]
       }],
       type: '0',
@@ -244,7 +246,17 @@ export default class ListBook extends React.Component {
                       <div className="book-info">{book.author}#{book.publish}</div>
                     </CellBody>
                     <CellFooter>
-                      <div className="book-num"><Badge preset="body" className="gray-badge">{book.type}</Badge></div>
+                      <div className="book-num">
+                        <Badge preset="body" className={
+                          ['大一', '大二', '大三', '大四'].indexOf(book.type) != -1 ? 'blue-badge'
+                          :
+                          ['考研', '考公', '考级'].indexOf(book.type) != -1 ? 'red-badge'
+                          :
+                          ['复习资料'].indexOf(book.type) != -1 ? 'green-badge'
+                          :
+                          'grey-badge'
+                        }>{book.type}</Badge>
+                      </div>
                     </CellFooter>
                   </Cell>
                 )
