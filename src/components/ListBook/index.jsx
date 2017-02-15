@@ -16,7 +16,10 @@ import {
   Label,
   Radio,
   Select,
-  Checkbox
+  Checkbox,
+  Popup,
+  Picker,
+  Badge
 } from 'react-weui';
 
 import './index.scss';
@@ -29,16 +32,47 @@ export default class ListBook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      picker_show: false,
+      picker_value: '全部',
+      picker_group: [{
+        items: [{
+          label: '全部'
+        },{
+          label: '大一'
+        },{
+          label: '大二',
+        },{
+          label: '大三'
+        },{
+          label: '大四'
+        },{
+          label: '考研'
+        },{
+          label: '考公'
+        },{
+          label: '考级'
+        },{
+          label: '复习资料'
+        }]
+      }],
       type: '0',
       value: '',
       all: [],
       searched: [],
+      picked:[],
+      count: 0
     };
+  }
+  hide() {
+    this.setState({
+      picker_show: false,
+    })
   }
   componentDidMount() {
     var that = this;
     getBookList().then(function (books) {
       let all = [];
+      let count = 0;
       for (let i = 0; i < books.length; i++) {
         let book = books[i].attributes;
         all.push({
@@ -48,10 +82,13 @@ export default class ListBook extends React.Component {
           name: book.name || '',
           num: book.num || 0,
           publish: book.publish || '',
+          type: book.type
         })
+        count += book.num;
       }
       that.setState({
-        all
+        all,
+        count
       })
     });
   }
@@ -62,11 +99,19 @@ export default class ListBook extends React.Component {
     })
   }
   handleChange(e) {
+    let {
+      searched,
+      picker_value
+    } = this.state;
+
     const value = e.target.value;
-    const searched = value === '' ? [] : this.state.searched;
+    searched = value === '' ? [] : searched;
+    picker_value = value === '' ? '全部' : picker_value;
+
     this.setState({
       value,
-      searched
+      searched,
+      picker_value
     })
   }
   handleSearch() {
@@ -86,15 +131,61 @@ export default class ListBook extends React.Component {
       }
     }
     this.setState({
-      searched
+      searched,
+      picker_value: '全部'
     })
+  }
+  handlePicker(selected) {
+    const {
+      all,
+      searched
+    } = this.state;
+
+    let value = '';
+    selected.forEach((s, i) => {
+      value = this.state.picker_group[i]['items'][s].label
+    })
+
+    if (value === '全部') {
+      this.setState({
+        picker_value: value,
+        picker_show: false,
+        picked: []
+      })
+      return;
+    }
+
+    const data = searched.length > 0 ? searched : all;
+    let arr = [];
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].type === value) {
+        arr.push(data[i])
+      }
+    }
+
+    if (arr.length > 0) {
+      this.setState({
+        picked: arr,
+        picker_value: value,
+        picker_show: false
+      })
+    } else {
+      this.setState({
+        picker_show: false
+      })
+      alert('找不到该分类');
+    }
   }
   render() {
     const {
       searched,
-      all
+      all,
+      picked,
+      picker_value
     } = this.state;
-    const data = searched.length > 0 ? searched : all;
+    let data = searched.length > 0 ? searched : all;
+    data = picker_value == '全部' ? data : picked;
+
     return (
       <div className="scroll-body">
         <div>
@@ -116,7 +207,34 @@ export default class ListBook extends React.Component {
               </CellFooter>
             </FormCell>
           </Form>
+          <Form style={{marginTop: 0}}>
+            <FormCell>
+              <CellHeader>
+                <Label>图书分类</Label>
+              </CellHeader>
+              <CellBody>
+                <Input
+                  type="text"
+                  onClick={e => {
+                    e.preventDefault()
+                    this.setState({ picker_show: true })
+                  }}
+                  placeholder="请选择一个分类"
+                  value={this.state.picker_value}
+                  readOnly={true}
+                />
+              </CellBody>
+            </FormCell>
+          </Form>
+          <Picker
+            lang={{leftBtn: '取消', rightBtn: '确定'}}
+            onChange={(selected) => this.handlePicker(selected)}
+            groups={this.state.picker_group}
+            show={this.state.picker_show}
+            onCancel={e => this.setState({ picker_show: false })}
+          />
           <div>
+            <CellsTitle className="cell-title">爱心书库当前共有{this.state.count}本书</CellsTitle>
             <Cells className="full-cell">
               {
                 data.map((book, i) =>
@@ -126,7 +244,7 @@ export default class ListBook extends React.Component {
                       <div className="book-info">{book.author}#{book.publish}</div>
                     </CellBody>
                     <CellFooter>
-                      <div className="book-num">可借：{book.num}</div>
+                      <div className="book-num"><Badge preset="body" className="gray-badge">{book.type}</Badge></div>
                     </CellFooter>
                   </Cell>
                 )

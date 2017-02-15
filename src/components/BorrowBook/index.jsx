@@ -425,7 +425,14 @@ export default class BorrowBook extends React.Component {
             <Msg
               type="success"
               title="借阅成功"
-              description="取书时间地点"
+              description={
+                <div>
+                  <p>取书时间：每周五中午12点到1点</p>
+                  <p>取书地点：{step1.xiaoqu == '屏峰校区' ? '屏峰-西12架空层团学办公室' : '朝晖-老研楼103'}</p>
+                  <p>还书时间：每学期第一周周六，届时还书请到{step1.xiaoqu == '屏峰校区' ? '屏峰-支干路摊位' : '朝晖-综合楼前摊位'}</p>
+                  <p className="important-p">注意：若未在规定时间内还书超过2次，以后就不给予借阅</p>
+                </div>
+              }
               buttons={[{
                 type: 'primary',
                 label: '确定',
