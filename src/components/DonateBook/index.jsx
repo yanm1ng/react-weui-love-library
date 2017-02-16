@@ -177,7 +177,7 @@ export default class DonateBook extends React.Component {
             <Msg
               type="success"
               title="提交成功"
-              description={parseInt(form.num) >= 5 ? '我们会安排工作人员三天内上门收书，感谢你的支持' : '感谢你的支持'}
+              description={parseInt(form.num) >= 5 ? '我们会安排工作人员三天内上门收书，收书时间：每周四中午12点到1点' : '收书时间地点：每周五中午12点到1点在朝晖老研楼103，屏峰西12架空层团学办公室'}
               buttons={[{
                 type: 'primary',
                 label: '返回',
