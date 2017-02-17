@@ -376,7 +376,7 @@ export default class BorrowBook extends React.Component {
               label: '同意',
               onClick: () => this.handleStep(2)
             }]} show={this.state.dialog}>
-              请爱护图书，还书将于期末由专人短信通知
+              请爱护书籍，若有遗失或损坏情况严重者，将不再给予借阅
             </Dialog>
             <CellsTitle className="cell-title" onClick={() => this.handleStep(0)}>{'<< 返回上一步'}</CellsTitle>
             <Form>

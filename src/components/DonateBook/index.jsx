@@ -138,7 +138,7 @@ export default class DonateBook extends React.Component {
                   <Label>寝室</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="text" placeholder="你的寝室" value={form.qinshi} onChange={(e) => this.handleInput(e, 'qinshi')} />
+                  <Input type="text" placeholder="你的寝室，需注明楼" value={form.qinshi} onChange={(e) => this.handleInput(e, 'qinshi')} />
                 </CellBody>
               </FormCell>
               <FormCell>
