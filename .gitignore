@@ -15,3 +15,6 @@ node_modules
 
 # log file
 *.log
+
+#build file
+index.html
