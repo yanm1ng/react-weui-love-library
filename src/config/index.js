@@ -1,4 +1,4 @@
 export default {
-  appId: '48J8TbEpg8GsjtKeY88jXaze-gzGzoHsz',
-  appKey: '55vgWsLWUenIJWdJPCGn1OhJ'
+  appId: '9IGHxthDkB0WBEW5CSmljqXH-gzGzoHsz',
+  appKey: 'INwaT9iIBrfeY01FiS2qkrvv'
 };

@@ -13,7 +13,8 @@ import {
   Button,
   TextArea,
   Msg,
-  Toptips
+  Toptips,
+  Picker
 } from 'react-weui';
 
 import './index.scss';
@@ -30,6 +31,52 @@ export default class DonateBook extends React.Component {
       show: false,
       text: '',
       timer: null,
+
+      picker_show: false,
+      picker_value: '环境学院',
+      picker_group: [{
+        items: [{
+          label: '健行学院'
+        },{
+          label: '化学工程学院'
+        },{
+          label: '海洋学院'
+        },{
+          label: '材料科学与工程学院',
+        },{
+          label: '机械工程学院'
+        },{
+          label: '信息工程学院'
+        },{
+          label: '计算机科学与技术学院（软件学院）'
+        },{
+          label: '经贸管理学院'
+        },{
+          label: '建筑工程学院'
+        },{
+          label: '生物工程学院'
+        },{
+          label: '环境学院'
+        },{
+          label: '教育科学与技术学院'
+        },{
+          label: '外国语学院'
+        },{
+          label: '药学院 、绿色制药协同创新中心'
+        },{
+          label: '理学院'
+        },{
+          label: '人文学院'
+        },{
+          label: '艺术学院'
+        },{
+          label: '法学院'
+        },{
+          label: '政治与公共管理学院'
+        },{
+          label: '国际学院'
+        }]
+      }],
 
       form: {
         name: '',
@@ -60,7 +107,6 @@ export default class DonateBook extends React.Component {
       success: false,
       form: {
         name: '',
-        xueyuan: '',
         qinshi: '',
         phone: '',
         num: '0',
@@ -70,17 +116,20 @@ export default class DonateBook extends React.Component {
   }
   handleSubmit() {
     const {
-      form
+      form,
+      picker_value
     } = this.state;
     const that = this;
+
+    const regu = /^[1][3-9][0-9]{9}$/;
+    const re = new RegExp(regu);
+
     let bool = false;
     if (form.name.trim() === '') {
       bool = true;
-    } else if (form.xueyuan.trim() === '') {
-      bool = true;
     } else if (form.qinshi.trim() === '') {
       bool = true;
-    } else if (form.phone.trim() === '') {
+    } else if (!re.test(form.phone)) {
       bool = true;
     } else if (parseInt(form.num) <= 0) {
       bool = true;
@@ -99,6 +148,7 @@ export default class DonateBook extends React.Component {
         });
       }, 2000);
     } else {
+      form.xueyuan = picker_value;
       addDonate(form).save().then(function(donate){
         that.setState({
           success: true
@@ -130,9 +180,34 @@ export default class DonateBook extends React.Component {
                   <Label>学院</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="text" placeholder="你的学院" value={form.xueyuan} onChange={(e) => this.handleInput(e, 'xueyuan')} />
+                  <Input
+                    type="text"
+                    onClick={e => {
+                      e.preventDefault()
+                      this.setState({ picker_show: true })
+                    }}
+                    placeholder="选择你所在的学院"
+                    value={this.state.picker_value}
+                    readOnly={true}
+                  />
                 </CellBody>
               </FormCell>
+              <Picker
+                lang={{leftBtn: '取消', rightBtn: '确定'}}
+                onChange={(selected) => {
+                  let value = '';
+                  selected.forEach((s, i) => {
+                    value = this.state.picker_group[i]['items'][s].label
+                  })
+                  this.setState({
+                    picker_value: value,
+                    picker_show: false
+                  })
+                }}
+                groups={this.state.picker_group}
+                show={this.state.picker_show}
+                onCancel={e => this.setState({ picker_show: false })}
+              />
               <FormCell>
                 <CellHeader>
                   <Label>寝室</Label>
@@ -146,7 +221,7 @@ export default class DonateBook extends React.Component {
                   <Label>联系方式</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="text" placeholder="长短号" value={form.phone} onChange={(e) => this.handleInput(e, 'phone')} />
+                  <Input type="number" placeholder="手机长号" value={form.phone} onChange={(e) => this.handleInput(e, 'phone')} />
                 </CellBody>
               </FormCell>
               <FormCell>

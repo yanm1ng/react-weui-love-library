@@ -236,7 +236,7 @@ export default class ListBook extends React.Component {
             onCancel={e => this.setState({ picker_show: false })}
           />
           <div>
-            <CellsTitle className="cell-title">爱心书库当前共有{this.state.count}本书</CellsTitle>
+            <CellsTitle className="cell-title">绿色书库当前共有{this.state.count}本书</CellsTitle>
             <Cells className="full-cell">
               {
                 data.map((book, i) =>

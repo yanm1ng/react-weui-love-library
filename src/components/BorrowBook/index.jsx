@@ -18,7 +18,8 @@ import {
   Checkbox,
   Toptips,
   Msg,
-  Dialog
+  Dialog,
+  Picker
 } from 'react-weui';
 
 import './index.scss';
@@ -41,12 +42,57 @@ export default class BorrowBook extends React.Component {
       text: '',
       timer: null,
 
+      picker_show: false,
+      picker_value: '环境学院',
+      picker_group: [{
+        items: [{
+          label: '健行学院'
+        },{
+          label: '化学工程学院'
+        },{
+          label: '海洋学院'
+        },{
+          label: '材料科学与工程学院',
+        },{
+          label: '机械工程学院'
+        },{
+          label: '信息工程学院'
+        },{
+          label: '计算机科学与技术学院（软件学院）'
+        },{
+          label: '经贸管理学院'
+        },{
+          label: '建筑工程学院'
+        },{
+          label: '生物工程学院'
+        },{
+          label: '环境学院'
+        },{
+          label: '教育科学与技术学院'
+        },{
+          label: '外国语学院'
+        },{
+          label: '药学院 、绿色制药协同创新中心'
+        },{
+          label: '理学院'
+        },{
+          label: '人文学院'
+        },{
+          label: '艺术学院'
+        },{
+          label: '法学院'
+        },{
+          label: '政治与公共管理学院'
+        },{
+          label: '国际学院'
+        }]
+      }],
+
       step: 0,
 
       step1: {
         xiaoqu: '屏峰校区',
         name: '',
-        xueyuan: '',
         xuehao: '',
         phone: ''
       },
@@ -117,16 +163,15 @@ export default class BorrowBook extends React.Component {
       const {
         step1
       } = this.state;
-
+      const regu = /^[1][3-9][0-9]{9}$/;
+      const re = new RegExp(regu);
       let bool = false;
       if (step1.name.trim() === '') {
         bool = true;
-      } else if (step1.xueyuan.trim() === '') {
+      } else if (step1.xuehao.length < 6 || step1.xuehao.length > 12) {
         bool = true;
-      } else if (step1.xuehao.length < 12) {
+      } else if (!re.test(step1.phone)){
         bool = true;
-      } else {
-
       }
       if (bool) {
         this.setState({
@@ -150,7 +195,8 @@ export default class BorrowBook extends React.Component {
         all
       } = this.state.step2;
       const {
-        step1
+        step1,
+        picker_value
       } = this.state;
       const that = this;
 
@@ -167,6 +213,7 @@ export default class BorrowBook extends React.Component {
         }
       }
       step1.books = books;
+      step1.xueyuan = picker_value;
       addBorrow(step1).save().then(function(borrow){
         that.setState({
           dialog: false,
@@ -341,9 +388,34 @@ export default class BorrowBook extends React.Component {
                   <Label>学院</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="text" placeholder="你的学院" value={step1.xueyuan} onChange={(e) => this.handleInput(e, 'xueyuan')} />
+                  <Input
+                    type="text"
+                    onClick={e => {
+                      e.preventDefault()
+                      this.setState({ picker_show: true })
+                    }}
+                    placeholder="选择你所在的学院"
+                    value={this.state.picker_value}
+                    readOnly={true}
+                  />
                 </CellBody>
               </FormCell>
+              <Picker
+                lang={{leftBtn: '取消', rightBtn: '确定'}}
+                onChange={(selected) => {
+                  let value = '';
+                  selected.forEach((s, i) => {
+                    value = this.state.picker_group[i]['items'][s].label
+                  })
+                  this.setState({
+                    picker_value: value,
+                    picker_show: false
+                  })
+                }}
+                groups={this.state.picker_group}
+                show={this.state.picker_show}
+                onCancel={e => this.setState({ picker_show: false })}
+              />
               <FormCell>
                 <CellHeader>
                   <Label>学号</Label>
@@ -357,7 +429,7 @@ export default class BorrowBook extends React.Component {
                   <Label>联系方式</Label>
                 </CellHeader>
                 <CellBody>
-                  <Input type="text" placeholder="长短号" value={step1.phone} onChange={(e) => this.handleInput(e, 'phone')} />
+                  <Input type="number" placeholder="手机长号" value={step1.phone} onChange={(e) => this.handleInput(e, 'phone')} />
                 </CellBody>
               </FormCell>
             </Form>
