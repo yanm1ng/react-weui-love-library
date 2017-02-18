@@ -14,7 +14,8 @@ import {
   TextArea,
   Msg,
   Toptips,
-  Picker
+  Picker,
+  Toast
 } from 'react-weui';
 
 import './index.scss';
@@ -32,6 +33,7 @@ export default class DonateBook extends React.Component {
       text: '',
       timer: null,
 
+      loading_show: false,
       picker_show: false,
       picker_value: '环境学院',
       picker_group: [{
@@ -148,10 +150,14 @@ export default class DonateBook extends React.Component {
         });
       }, 2000);
     } else {
+      that.setState({
+        loading_show: true
+      })
       form.xueyuan = picker_value;
       addDonate(form).save().then(function(donate){
         that.setState({
-          success: true
+          success: true,
+          loading_show: false
         })
       })
     }
@@ -164,6 +170,7 @@ export default class DonateBook extends React.Component {
       <div className="scroll-body">
         {!this.state.success &&
           <div>
+            <Toast icon="loading" show={this.state.loading_show}>提交中...</Toast>
             <Toptips type="warn" show={this.state.show}>{this.state.text}</Toptips>
             <CellsTitle className="cell-title">信息填写</CellsTitle>
             <Form>

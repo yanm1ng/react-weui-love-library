@@ -19,7 +19,8 @@ import {
   Toptips,
   Msg,
   Dialog,
-  Picker
+  Picker,
+  Toast
 } from 'react-weui';
 
 import './index.scss';
@@ -42,6 +43,7 @@ export default class BorrowBook extends React.Component {
       text: '',
       timer: null,
 
+      loading_show: false,
       picker_show: false,
       picker_value: '环境学院',
       picker_group: [{
@@ -200,6 +202,10 @@ export default class BorrowBook extends React.Component {
       } = this.state;
       const that = this;
 
+      that.setState({
+        loading_show: true,
+        dialog: false
+      })
       for (let i = 0; i < checked.length; i++) {
         borrowBook(checked[i]);
       }
@@ -216,7 +222,7 @@ export default class BorrowBook extends React.Component {
       step1.xueyuan = picker_value;
       addBorrow(step1).save().then(function(borrow){
         that.setState({
-          dialog: false,
+          loading_show: false,
           step
         })
       })
@@ -354,6 +360,7 @@ export default class BorrowBook extends React.Component {
     const data = searched.length > 0 ? searched : all;
     return (
       <div className="scroll-body">
+        <Toast icon="loading" show={this.state.loading_show}>提交中...</Toast>
         <Toptips type="warn" show={this.state.show}>{this.state.text}</Toptips>
         {this.state.step === 0 &&
           <div>

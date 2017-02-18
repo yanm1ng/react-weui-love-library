@@ -19,7 +19,8 @@ import {
   Checkbox,
   Popup,
   Picker,
-  Badge
+  Badge,
+  Toast
 } from 'react-weui';
 
 import './index.scss';
@@ -32,6 +33,7 @@ export default class ListBook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading_show: true,
       picker_show: false,
       picker_value: '全部',
       picker_group: [{
@@ -57,6 +59,7 @@ export default class ListBook extends React.Component {
           label: '其他学院'
         }]
       }],
+      
       type: '0',
       value: '',
       all: [],
@@ -90,7 +93,8 @@ export default class ListBook extends React.Component {
       }
       that.setState({
         all,
-        count
+        count,
+        loading_show: false
       })
     });
   }
@@ -191,6 +195,7 @@ export default class ListBook extends React.Component {
     return (
       <div className="scroll-body">
         <div>
+          <Toast icon="loading" show={this.state.loading_show}>加载中...</Toast>
           <CellsTitle className="cell-title">所有书目</CellsTitle>
           <Form>
             <FormCell select selectPos="before" className="select-form">
