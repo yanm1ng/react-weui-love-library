@@ -40,23 +40,41 @@ export default class ListBook extends React.Component {
         items: [{
           label: '全部'
         },{
-          label: '大一'
+          label: '大一（屏峰）'
         },{
-          label: '大二',
+          label: '大一（朝晖）'
         },{
-          label: '大三'
+          label: '大二（屏峰）',
         },{
-          label: '大四'
+          label: '大二（朝晖）',
         },{
-          label: '考研'
+          label: '大三（屏峰）'
         },{
-          label: '考公'
+          label: '大三（朝晖）'
         },{
-          label: '考级'
+          label: '大四（屏峰）'
         },{
-          label: '复习资料'
+          label: '大四（朝晖）'
         },{
-          label: '其他学院'
+          label: '考研（屏峰）'
+        },{
+          label: '考研（朝晖）'
+        },{
+          label: '考公（屏峰）'
+        },{
+          label: '考公（朝晖）'
+        },{
+          label: '考级（屏峰）'
+        },{
+          label: '考级（朝晖）'
+        },{
+          label: '复习资料（屏峰）'
+        },{
+          label: '复习资料（朝晖）'
+        },{
+          label: '其他学院（屏峰）'
+        },{
+          label: '其他学院（朝晖）'
         }]
       }],
       
