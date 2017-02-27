@@ -271,11 +271,11 @@ export default class ListBook extends React.Component {
                     <CellFooter>
                       <div className="book-num">
                         <Badge preset="body" className={
-                          ['大一', '大二', '大三', '大四'].indexOf(book.type) != -1 ? 'blue-badge'
+                          ['大一（屏峰）', '大一（朝晖）', '大二（屏峰）', '大二（朝晖）', '大三（屏峰）', '大三（朝晖）', '大四（屏峰）', '大四（朝晖）'].indexOf(book.type) != -1 ? 'blue-badge'
                           :
-                          ['考研', '考公', '考级'].indexOf(book.type) != -1 ? 'red-badge'
+                          ['考研（屏峰）', '考公（屏峰）', '考级（屏峰）', '考研（朝晖）', '考公（朝晖）', '考级（朝晖）'].indexOf(book.type) != -1 ? 'red-badge'
                           :
-                          ['复习资料'].indexOf(book.type) != -1 ? 'green-badge'
+                          ['复习资料（屏峰）', '复习资料（朝晖）'].indexOf(book.type) != -1 ? 'green-badge'
                           :
                           'grey-badge'
                         }>{book.type}</Badge>
