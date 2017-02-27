@@ -44,6 +44,7 @@ export default class BorrowBook extends React.Component {
       timer: null,
 
       loading_show: false,
+      
       picker_show: false,
       picker_value: '环境学院',
       picker_group: [{
@@ -98,6 +99,7 @@ export default class BorrowBook extends React.Component {
         xuehao: '',
         phone: ''
       },
+
       step2: {
         type: '0',
         value: '',
