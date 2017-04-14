@@ -7,9 +7,8 @@ AV.init({
 });
 
 export function getBookList() {
-
   let query = new AV.Query('Book');
-  return query.find();
+  return query.limit(500).find();
 }
 
 export function borrowBook(id) {

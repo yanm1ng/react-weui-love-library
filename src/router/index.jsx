@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, hashHistory, IndexRoute } from 'react-router';
+import { Router, Route, IndexRoute } from 'react-router';
+import createHashHistory from 'history/lib/createHashHistory'
+const history = createHashHistory({ queryKey: false });
+
 import { Button, Tab, TabBarItem } from 'react-weui';
 import BorrowBook from '../components/BorrowBook/index';
 import DonateBook from '../components/DonateBook/index';
@@ -22,7 +25,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="main-body">
-        <Router>
+        <Router history={history}>
           <Route path="/">
             <IndexRoute component={BorrowBook} />
             <Route path="/borrow" component={BorrowBook} />
