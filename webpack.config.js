@@ -21,6 +21,7 @@ module.exports = {
 			{
 				test: /\.(js|jsx)$/,
 				loader: 'babel-loader',
+				exclude: /node_modules/,
 				query: {
 					presets: ['react', 'es2015'],
 				}
@@ -30,23 +31,30 @@ module.exports = {
 			}, {
 				test: /\.(png|jpg|jpeg|gif|eot|woff|svg|ttf|woff2|appcache)(\?|$)/,
 				exclude: /^node_modules$/,
-				loader: 'file-loader?name=[name].[ext]'
+				loader: 'file-loader?limit=80000&name=[name].[ext]'
 			}
 		]
 	},
 	resolve: {
-		extensions: ['', '.js', '.jsx'], //后缀名自动补全
+		root: path.resolve(__dirname, './node_modules'),
+		extensions: ['', '.js', '.jsx']
 	},
 	plugins: [
-		new webpack.optimize.UglifyJsPlugin(),
+		new webpack.optimize.UglifyJsPlugin({
+			compressor: {
+				warnings: false
+			}
+		}),
+		new webpack.DllReferencePlugin({
+			context: __dirname,
+			manifest: require('./manifest.json'),
+		}),
 		new webpack.HotModuleReplacementPlugin(),
-		new webpack.optimize.CommonsChunkPlugin('common.js'),
 		new ExtractTextPlugin("[name].css"),
+		
 		new HtmlWebpackPlugin({
 			filename: '../index.html',
 			template: './src/index.html',
-			inject: 'body',
-			hash: true
 		})
 	]
 };
