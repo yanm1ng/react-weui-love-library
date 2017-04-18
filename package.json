@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack --progress --colors",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "dll": "webpack --config  webpack.dll.config.js --progress"
   },
   "author": "yanming",
   "dependencies": {

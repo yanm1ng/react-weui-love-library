@@ -6,7 +6,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
 	entry: [
 		'webpack-hot-middleware/client',
-		path.resolve(__dirname, './src/router/index'),
+		path.resolve(__dirname, './src/router/index')
 	],
 	output: {
 		path: path.resolve(__dirname, './build'),
@@ -14,19 +14,17 @@ module.exports = {
 		publicPath: '/'
 	},
 	module: {
-		loaders: [
-			{
-				test: /\.(js|jsx)$/,
-				loaders: ['react-hot', 'babel?presets[]=es2015,presets[]=react'],
-				exclude: path.resolve(__dirname, 'node_modules'),
-			}, {
-				test: /\.(css|scss)$/,
-				loader: ExtractTextPlugin.extract("style", "css!sass!autoprefixer")
-			}, {
-				test: /\.(png|jpg|jpeg|gif|eot|woff|svg|ttf|woff2)(\?|$)/,
-				loader: 'file-loader?limit=80000&name=[name].[ext]'
-			}
-		]
+		loaders: [{
+			test: /\.(js|jsx)$/,
+			loaders: ['react-hot', 'babel?presets[]=es2015,presets[]=react'],
+			exclude: path.resolve(__dirname, 'node_modules')
+		}, {
+			test: /\.(css|scss)$/,
+			loader: ExtractTextPlugin.extract("style", "css!sass!autoprefixer")
+		}, {
+			test: /\.(png|jpg|jpeg|gif|eot|woff|svg|ttf|woff2)(\?|$)/,
+			loader: 'file-loader?limit=80000&name=[name].[ext]'
+		}]
 	},
 	resolve: {
 		root: path.resolve(__dirname, './node_modules'),
@@ -34,11 +32,11 @@ module.exports = {
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
-  	new webpack.NoErrorsPlugin(),
+		new webpack.NoErrorsPlugin(),
 		new webpack.optimize.UglifyJsPlugin({
 			output: {
-        comments: false,
-      },
+				comments: false,
+			},
 			compressor: {
 				warnings: false
 			}
@@ -47,9 +45,8 @@ module.exports = {
 			context: __dirname,
 			manifest: require('./manifest.json'),
 		}),
-		new webpack.HotModuleReplacementPlugin(),
 		new ExtractTextPlugin("[name].css"),
-		
+
 		new HtmlWebpackPlugin({
 			filename: '../index.html',
 			template: './src/index.html',
