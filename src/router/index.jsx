@@ -9,10 +9,6 @@ import BorrowBook from '../components/BorrowBook/index';
 import DonateBook from '../components/DonateBook/index';
 import ListBook from '../components/ListBook/index';
 
-import IconA from '../images/icon-a.png';
-import IconB from '../images/icon-b.png';
-import IconC from '../images/icon-c.png';
-
 import 'weui';
 import './index.scss';
 import 'react-weui/build/packages/react-weui.css';
@@ -45,5 +41,5 @@ class App extends React.Component {
 
 ReactDOM.render(
   <App />,
-  document.getElementById('react-app')
+  document.getElementById('react-content')
 );

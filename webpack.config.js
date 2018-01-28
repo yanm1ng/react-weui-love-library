@@ -11,13 +11,17 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, './build'),
 		filename: 'bundle.js',
-		publicPath: '/'
+    chunkFilename: '[name].[chunkhash:10].js',
 	},
 	module: {
 		loaders: [{
 			test: /\.(js|jsx)$/,
-			loaders: ['react-hot', 'babel?presets[]=es2015,presets[]=react'],
-			exclude: path.resolve(__dirname, 'node_modules')
+			loader: 'babel-loader',
+			query: {
+				babelrc: false,
+				presets: ['react', 'es2015', 'stage-3']
+			},
+      exclude: /^node_modules$/
 		}, {
 			test: /\.(css|scss)$/,
 			loader: ExtractTextPlugin.extract("style", "css!sass!autoprefixer")
@@ -50,6 +54,8 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			filename: '../index.html',
 			template: './src/index.html',
+			inject: 'body',
+      hash: true
 		})
 	]
 };
