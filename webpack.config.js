@@ -5,7 +5,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: [
-		'webpack-hot-middleware/client',
+		// 'webpack-hot-middleware/client',
 		path.resolve(__dirname, './src/router/index')
 	],
 	output: {
