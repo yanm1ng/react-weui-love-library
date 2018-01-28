@@ -263,7 +263,7 @@ export default class ListBook extends React.Component {
             <Cells className="full-cell">
               {
                 data.map((book, i) =>
-                  <Cell className="rich-cell" key={i}>
+                  <Cell className="rich-cell" key={`cell${book.id}`}>
                     <CellBody>
                       <div className="book-name">{book.name}</div>
                       <div className="book-info">{book.author}#{book.publish}</div>

@@ -484,7 +484,7 @@ export default class BorrowBook extends React.Component {
             <Form checkbox className="margin-form">
               {
                 data.map((book, i) =>
-                  <FormCell checkbox className="rich-checkbox">
+                  <FormCell key={`form${book.key}`} checkbox className="rich-checkbox">
                     <CellHeader>
                       <Checkbox checked={checked.indexOf(book.id) != -1} onClick={() => this.changeCheckBox(book.key, book.id)} />
                     </CellHeader>

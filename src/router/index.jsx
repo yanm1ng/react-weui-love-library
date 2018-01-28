@@ -15,7 +15,7 @@ import IconC from '../images/icon-c.png';
 
 import 'weui';
 import './index.scss';
-import 'react-weui/lib/react-weui.min.css';
+import 'react-weui/build/packages/react-weui.css';
 
 class App extends React.Component {
   handleHashIndex(e) {
@@ -34,9 +34,9 @@ class App extends React.Component {
           </Route>
         </Router>
         <Tab type="tabbar" className="tabbar" onChange={this.handleHashIndex}>
-          <TabBarItem icon={<img src={IconA} />} label="借书"></TabBarItem>
-          <TabBarItem icon={<img src={IconB} />} label="捐书"></TabBarItem>
-          <TabBarItem icon={<img src={IconC} />} label="书目"></TabBarItem>
+          <TabBarItem icon={<img src="//gw.alicdn.com/tfs/TB1ZrRso2DH8KJjy1XcXXcpdXXa-81-81.png" />} label="借书"></TabBarItem>
+          <TabBarItem icon={<img src="//gw.alicdn.com/tfs/TB1M8e.myqAXuNjy1XdXXaYcVXa-81-81.png" />} label="捐书"></TabBarItem>
+          <TabBarItem icon={<img src="//gw.alicdn.com/tfs/TB1JQ9.myqAXuNjy1XdXXaYcVXa-81-81.png" />} label="书目"></TabBarItem>
         </Tab>
       </div>
     )
@@ -45,5 +45,5 @@ class App extends React.Component {
 
 ReactDOM.render(
   <App />,
-  document.getElementById('react-content')
+  document.getElementById('react-app')
 );
